@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI-Augmented Maker — UIST 2026 Workshop</title>
+<style>
+  :root {
+    --white: #ffffff;
+    --off-white: #fbfbfa;
+    --ink: #0d0d0d;
+    --gray: #555555;
+    --gray-light: #8a8a8a;
+    --teal: #3fb6a8;
+    --purple: #9b8fd4;
+    --purple-dark: #6f62b8;
+    --line: #e4e2ee;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Futura', 'Century Gothic', 'Avenir Next', 'Trebuchet MS', sans-serif;
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    border-bottom: 2px solid var(--ink);
+    padding: 22px 0;
+  }
+  .topbar .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .conf-badges {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-size: 14px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+  .conf-badges span b {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--purple-dark); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 90px 0 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-decor {
+    position: absolute;
+    top: -120px;
+    right: -140px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--purple) 0%, transparent 70%);
+    opacity: 0.18;
+    z-index: 0;
+  }
+  .hero .wrap { position: relative; z-index: 1; }
+
+  .eyebrow {
+    display: inline-block;
+    color: var(--teal);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  .eyebrow::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 600px;
+    max-width: 60vw;
+    height: 2px;
+    background: var(--purple-dark);
+  }
+
+  h1.title {
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.03;
+    letter-spacing: -0.5px;
+    max-width: 900px;
+  }
+
+  .subtitle {
+    margin-top: 22px;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-style: italic;
+    font-weight: 400;
+    color: #333;
+    max-width: 760px;
+  }
+
+  .abstract {
+    margin-top: 30px;
+    max-width: 700px;
+    font-size: 16px;
+    color: var(--gray);
+  }
+  .abstract strong { color: var(--ink); }
+
+  .hero-cta {
+    margin-top: 36px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.18); }
+  .btn-outline {
+    border: 2px solid var(--ink);
+    color: var(--ink);
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--white); }
+
+  /* ---------- Section shared ---------- */
+  section { padding: 64px 0; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+  .section-label {
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-rule {
+    flex: 1;
+    height: 2px;
+    background: var(--line);
+  }
+  h2.section-title {
+    font-size: clamp(28px, 3.5vw, 38px);
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  /* ---------- Themes ---------- */
+  .themes {
+    background: var(--off-white);
+  }
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+    margin-top: 8px;
+  }
+  .theme-card {
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 24px;
+  }
+  .theme-card .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--purple);
+    margin-bottom: 16px;
+  }
+  .theme-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .theme-card p {
+    font-size: 14.5px;
+    color: var(--gray);
+  }
+
+  /* ---------- Organizers ---------- */
+  .organizers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 44px 28px;
+  }
+  @media (max-width: 900px) {
+    .organizers-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .organizers-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+  }
+  .organizer {
+    text-align: center;
+  }
+  .avatar {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background: var(--purple);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .organizer h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .organizer p {
+    font-size: 13.5px;
+    color: var(--gray-light);
+    margin-top: 3px;
+  }
+
+  /* ---------- Participate / CTA ---------- */
+  .participate {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .participate .section-label { color: var(--teal); }
+  .participate .section-rule { background: #333; }
+  .participate-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .participate h2.section-title { color: var(--white); }
+  .participate p {
+    max-width: 560px;
+    color: #cfcfcf;
+    font-size: 15.5px;
+    margin-top: 10px;
+  }
+  .participate .btn-primary {
+    background: var(--purple);
+  }
+  .participate .btn-primary:hover { background: var(--teal); }
+
+  .key-dates {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    border-top: 1px solid #333;
+    padding-top: 30px;
+  }
+  .key-dates div { }
+  .key-dates .label {
+    font-size: 12.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .key-dates .value {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 36px 0;
+    border-top: 2px solid var(--ink);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13.5px;
+    color: var(--gray-light);
+  }
+  footer .badges {
+    display: flex;
+    gap: 18px;
+  }
+    
+    
+    
+.agenda { background: #fbfbfa; }
+.agenda-timeline { position: relative; margin-top: 8px; }
+.agenda-item {
+  display: grid;
+  grid-template-columns: 140px 56px 1fr;
+  column-gap: 24px;
+  position: relative;
+  padding-bottom: 56px;
+}
+.agenda-item:last-child { padding-bottom: 0; }
+.agenda-item .rail { position: relative; display: flex; justify-content: center; }
+.agenda-item .rail::before {
+  content: "";
+  position: absolute;
+  top: 56px;
+  bottom: -56px;
+  width: 2px;
+  background: #e4e2ee;
+}
+.agenda-item:last-child .rail::before { display: none; }
+.agenda-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #9b8fd4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  z-index: 1;
+}
+.agenda-when { text-align: right; padding-top: 4px; }
+.agenda-when .session {
+  color: #3fb6a8;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.agenda-when .time {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0d0d0d;
+  margin-top: 4px;
+}
+.agenda-body h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+.agenda-body p.desc { font-size: 15px; color: #555555; margin-bottom: 12px; }
+
+@media (max-width: 700px) {
+  .agenda-item { grid-template-columns: 44px 1fr; }
+  .agenda-when { display: none; }
+  .agenda-item .rail::before { top: 56px; bottom: -56px; }
+}    
+    
+    
+    
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="conf-badges">
+        <span><b>UIST</b> '26</span>
+        <span>SIGCHI</span>
+        <span>ACM</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#themes">Themes</a>
+        <a href="#organizers">Organizers</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#participate">Participate</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-decor"></div>
+    <div class="wrap">
+      <span class="eyebrow">Workshop</span>
+      <h1 class="title">The AI-Augmented Maker</h1>
+      <p class="subtitle">Challenges and opportunities in designing intelligence for community-driven DIY cultures.</p>
+      <p class="abstract">
+        Advances in generative AI have enabled makers to synthesize the knowledge traditionally curated by the maker community.
+        As AI tools become increasingly integrated into creative ecosystems, <strong>this workshop aims to chart new directions
+        for maker-centric tools by unpacking the concept of the "AI-augmented maker."</strong> Bringing together interdisciplinary
+        experts across fabrication, AI, and community-centered design, we will explore how integrating on-demand AI into making
+        can preserve — or disrupt — the conditions that give the maker movement its meaning.
+      </p>
+      <div class="hero-cta">
+        <a href="PDF/workshop_PDF.pdf"  class="btn btn-primary" >Workshop Proposal</a>
+        <a href="#themes" class="btn btn-outline">Workshop Themes</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="themes" id="themes">
+  <div class="wrap">
+    
+    <!-- Workshop Overview & Format -->
+    <div class="section-head">
+      <span class="section-label">Overview</span>
+      <span class="section-rule"></span>
+    </div>
+    <h2 class="section-title">About the Workshop</h2>
+    <div class="overview-content">
+      <p>In this workshop, we bring together HCI researchers and industry practitioners interested in exploring the intersection of AI and maker culture, with a particular focus on skill augmentation and the evolving nature of expertise within maker communities. Our workshop will feature:</p>
+      
+        <br> 
+      <ul class="format-list">
+        <li><strong>(1) Talks</strong> from invited speakers sharing perspectives on AI-augmented tools and systems developed for the maker community.</li>
+          <br>
+        <li><strong>(2) Group Brainstorming Sessions</strong> where participants collaboratively identify opportunities and challenges across four maker skill domains.</li>
+          <br>
+          
+        <li><strong>(3) Panel Discussions</strong> where participants and speakers synthesize findings and reflect on how to implement AI augmentation in our field while preserving the values of community-driven craft cultures.</li>
+      </ul>
+      
+      <p class="target-audience"><em>Our intended audience includes researchers, tool builders, and practitioners working across fabrication, HCI, AI, craft, and community-centered design.</em></p>
+    </div>
+
+    <!-- Skill Domains / Themes Grid -->
+    <div class="section-head" style="margin-top: 48px;">
+      <span class="section-label">Skill Domains</span>
+      <span class="section-rule"></span>
+    </div>
+    <h2 class="section-title">Four Categories of Maker Skills</h2>
+    <p class="section-intro">As maker culture is inherently interdisciplinary, we center our workshop around four broad skill categories:</p>
+
+    <div class="theme-grid">
+      <div class="theme-card">
+        <div class="dot"></div>
+        <h3>Physical Crafting</h3>
+        <p>Procedural and tool-specific competencies acquired through practice and repetition.</p>
+      </div>
+
+      <div class="theme-card">
+        <div class="dot"></div>
+        <h3>Design Thinking</h3>
+        <p>Creative thinking skills like brainstorming and subjective aesthetic judgment of form, character, and visual placement of components in space.</p>
+      </div>
+
+      <div class="theme-card">
+        <div class="dot"></div>
+        <h3>Cognition &amp; Analysis</h3>
+        <p>Understanding underlying physical/mathematical reasoning (dimensioning, material selection, structure, CAD/simulation) alongside reflective self-evaluation and iteration.</p>
+      </div>
+
+      <div class="theme-card">
+        <div class="dot"></div>
+        <h3>Ethics &amp; Inclusivity</h3>
+        <p>Social and ethical dimensions including empathetic design, accessibility, sustainability, and accountability for social and environmental impacts.</p>
+      </div>
+    </div>
+
+    <!-- Key Questions -->
+    <div class="section-head" style="margin-top: 48px;">
+      <span class="section-label">Inquiry</span>
+      <span class="section-rule"></span>
+    </div>
+    <h2 class="section-title">Key Questions We Explore</h2>
+    <ul class="questions-list">
+      <li>Across these four skill domains, where does AI present the greatest opportunities to augment maker practice, and where does it introduce the most significant challenges to community skills and values?</li>
+        <br> 
+      <li>Which skills are most important for makers to develop and retain, and which can be more readily supported or delegated to AI systems without compromising the integrity of the learning process?</li>
+        <br> 
+      <li>What workflows and feedback loops can we, as HCI researchers, put in place when developing these systems to ensure AI-augmented making remains a generative and enriching experience rather than a purely consumptive one?</li>
+        <br>
+      <li>How do we maintain alignment between the AI-augmented maker and the foundational philosophy of the maker movement—one centered on shared knowledge, open exchange, and community-driven practice?</li>
+    </ul>
+
+  </div>
+</section>
+
+  <section id="organizers">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-label">Organizers</span>
+        <span class="section-rule"></span>
+      </div>
+      <h2 class="section-title">Organizers</h2>
+      <br>
+      <div class="organizers-grid">
+        <div class="organizer">
+          <div class="avatar">MA</div>
+          <h3>Marwa AlAlawi</h3>
+          <p>MIT CSAIL</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">TS</div>
+          <h3>Ticha Sethapakdi</h3>
+          <p>MIT CSAIL</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">DT</div>
+          <h3>Dishita Turakhia</h3>
+          <p>Emory University</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">KS</div>
+          <h3>Katherine Song</h3>
+          <p>Delft University of Technology</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">IM</div>
+          <h3>Ilan Moyer</h3>
+          <p>MIT</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">LH</div>
+          <h3>Liang He</h3>
+          <p>University of Texas at Dallas</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">LZ</div>
+          <h3>Lvmin Zhang</h3>
+          <p>Stanford University</p>
+        </div>
+        <div class="organizer">
+          <div class="avatar">RD</div>
+          <h3>Ruofei Du</h3>
+          <p>Google XR</p>
+        </div>
+      </div>
+      <br><br>
+      <div style="display: flex; justify-content: center;">
+        <div class="organizer">
+          <div class="avatar">SM</div>
+          <h3>Stefanie Mueller</h3>
+          <p>MIT CSAIL</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+    
+    
+    
+    
+<section class="agenda" id="agenda">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-label">Agenda</span>
+        <span class="section-rule"></span>
+      </div>
+      <h2 class="section-title">Workshop Schedule</h2>
+      <p class="desc" style="max-width:700px; margin-top:6px;">
+        As a half-day workshop (~3 hours), participants will be working in groups of 5–6 organized around four maker-skill categories. Sessions are structured around two topics: building AI-augmented tools for
+        maker-specific skills, and preserving alignment with the values of the traditional maker community.
+      </p>
+      <br>
+      <div class="agenda-timeline">
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">9:00</div>
+            <div class="time">10 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🧊</div></div>
+          <div class="agenda-body">
+            <h3>Ice-breaker</h3>
+            <p class="desc">Interactive activity to introduces participants to one another and sorts them into groups.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">9:10</div>
+            <div class="time">20 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🎤</div></div>
+          <div class="agenda-body">
+            <h3>Invited Talks</h3>
+            <p class="desc">Invited speakers share their work and perspectives on making and AI.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">9:30</div>
+            <div class="time">30 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🪑</div></div>
+          <div class="agenda-body">
+            <h3>Group Session 1A — Topic 1</h3>
+            <p class="desc">Groups rotate through two of four thematic tables, brainstorming opportunities and challenges in building AI-augmented tools for maker-specific skills, building on ideas left by prior groups.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">10:00</div>
+            <div class="time">30 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🪑</div></div>
+          <div class="agenda-body">
+            <h3>Group Session 1B — Topic 1</h3>
+            <p class="desc">Groups rotate through the remaining two tables, same format. Followed by a 10-minute break.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">10:40</div>
+            <div class="time">20 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🗣️</div></div>
+          <div class="agenda-body">
+            <h3>Panel Discussion 1 — Topic 1</h3>
+            <p class="desc">Participants reconvene to contribute what emerged from the group sessions and observations from their tables.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">11:00</div>
+            <div class="time">30 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🪑</div></div>
+          <div class="agenda-body">
+            <h3>Group Session 2 — Topic 2</h3>
+            <p class="desc">Groups return to their tables to brainstorm preserving alignment between AI-augmented making and the core values of the maker community.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">11:30</div>
+            <div class="time">20 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">🗣️</div></div>
+          <div class="agenda-body">
+            <h3>Panel Discussion 2 — Topic 2</h3>
+            <p class="desc">Speakers and participants synthesize the key themes, tensions, and opportunities that emerged across both topics.</p>
+          </div>
+        </div>
+
+        <div class="agenda-item">
+          <div class="agenda-when">
+            <div class="session">11:50</div>
+            <div class="time">10 min</div>
+          </div>
+          <div class="rail"><div class="agenda-icon">✅</div></div>
+          <div class="agenda-body">
+            <h3>Closing Remarks &amp; Actionables</h3>
+            <p class="desc">Organizers summarize key takeaways, propose open research questions, and outline next steps — collaborations, publications, or community initiatives.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+    
+
+  <section class="participate" id="participate">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-label">Participate</span>
+        <span class="section-rule"></span>
+      </div>
+      <div class="participate-inner">
+        <div>
+          <h2 class="section-title">Join us at UIST 2026</h2>
+          <p>We welcome all researchers and practitioners across HCI, AI, fabrication, and maker communities.</p>
+        </div>
+        <a href="https://web.cvent.com/event/c258aabd-a362-447f-a75c-0f191c0b13b1/summary" class="btn btn-primary">Sign up</a>
+      </div>
+
+      <div class="key-dates">
+        <div>
+          <div class="label">Sign-up deadline</div>
+          <div class="value">Until capacity is reached (~25 participants)</div>
+        </div>
+        <div>
+          <div class="label">Notification</div>
+          <div class="value">TBD</div>
+        </div>
+        <div>
+          <div class="label">Workshop date</div>
+          <div class="value">November 2nd, 2026</div>
+        </div>
+        <div>
+          <div class="label">Format</div>
+          <div class="value">In-person</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>The AI-Augmented Maker — UIST 2026 Workshop</span>
+      <div class="badges">
+        <span>UIST '26</span>
+        <span>SIGCHI</span>
+        <span>ACM</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
