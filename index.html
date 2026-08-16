@@ -238,20 +238,24 @@
   .organizer {
     text-align: center;
   }
-  .avatar {
-    width: 108px;
-    height: 108px;
-    border-radius: 50%;
-    background: var(--purple);
-    margin: 0 auto 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: 1px;
-  }
+.avatar {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  overflow: hidden; /* Clips the image inside the circle */
+  background: var(--purple); /* Fallback background if image fails to load */
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Prevents stretching and fills the circular frame */
+  object-position: center; /* Default centering */
+}
   .organizer h3 {
     font-size: 16px;
     font-weight: 700;
@@ -515,50 +519,56 @@
       <br>
       <div class="organizers-grid">
         <div class="organizer">
-          <div class="avatar">MA</div>
+        
+          <div class="avatar"> <img src="pics/marwa.jpg" alt="Marwa AlAlawi" style="transform: scale(1.8); object-position: center -150%;">
+            </div>
           <h3>Marwa AlAlawi</h3>
           <p>MIT CSAIL</p>
         </div>
         <div class="organizer">
-          <div class="avatar">TS</div>
+          <div class="avatar"> <img src="pics/ticha.jpeg" alt="Ticha Sethapakdi" style="object-position: 70% 50%; transform: scale(3.4) translateY(9px);">
+            </div>
           <h3>Ticha Sethapakdi</h3>
           <p>MIT CSAIL</p>
         </div>
         <div class="organizer">
-          <div class="avatar">DT</div>
+            <div class="avatar"> <img src="pics/dishita.jpeg" alt="Dishita Turakhia" style="object-position: center 40%; transform: scale(2.5) translateY(8px);"> </div>
           <h3>Dishita Turakhia</h3>
           <p>Emory University</p>
         </div>
         <div class="organizer">
-          <div class="avatar">KS</div>
+        <div class="avatar"> <img src="pics/katherine.png" alt="Katherine Song" style="object-position: center 50%; transform: scale(1.2) translateY(-5px);"> </div>
           <h3>Katherine Song</h3>
           <p>Delft University of Technology</p>
         </div>
         <div class="organizer">
-          <div class="avatar">IM</div>
+          <div class="avatar"> <img src="pics/Ilan.jpeg" alt="Ilan Moyer" style=" transform: scale(2.5) translateY(28px); object-position: 80% 40%;">
+            </div>
           <h3>Ilan Moyer</h3>
           <p>MIT</p>
         </div>
         <div class="organizer">
-          <div class="avatar">LH</div>
+          <div class="avatar"> <img src="pics/Liang%20He.jpeg" alt="Liang He" style="transform: scale(1); object-position: center -150%;">
+            </div>
           <h3>Liang He</h3>
           <p>University of Texas at Dallas</p>
         </div>
         <div class="organizer">
-          <div class="avatar">LZ</div>
-          <h3>Lvmin Zhang</h3>
+          <div class="avatar"> <img src="pics/lvmin.jpeg" alt="Marwa AlAlawi" style="transform: scale(1); object-position: center 10%;">
+            </div>          <h3>Lvmin Zhang</h3>
           <p>Stanford University</p>
         </div>
         <div class="organizer">
-          <div class="avatar">RD</div>
-          <h3>Ruofei Du</h3>
+          <div class="avatar"> <img src="pics/RuofeiDu.jpg" alt="Ruofei Du" style="transform: scale(1.1); object-position: center 10%;">
+            </div>           <h3>Ruofei Du</h3>
           <p>Google XR</p>
         </div>
       </div>
       <br><br>
       <div style="display: flex; justify-content: center;">
         <div class="organizer">
-          <div class="avatar">SM</div>
+          <div class="avatar"> <img src="pics/stefanie%20mueller.png" alt="Stefanie  Mueller" style="object-position: 70% 50%; transform: scale(2.5) translateY(21px);">
+            </div>
           <h3>Stefanie Mueller</h3>
           <p>MIT CSAIL</p>
         </div>
